@@ -63,7 +63,7 @@ gamma = 0.9;
 maxt = 100;
 
 % max number of training episoides
-numepisodes = ((numrc*2)*(numrc*2)*(2^4)*(5)*(5))*1.75;
+numepisodes = ((numrc*2)*(numrc*2)*(2^4)*(5)*(5))*1.5;
 Qsum = zeros(1,numepisodes);
 saCountavg = zeros(1,numepisodes);
 
@@ -198,19 +198,19 @@ for episode = 1:numepisodes
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % update world display
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        cla; % clear old plot
-        for n = 1:nWalls
-            patch(Walls(n).X,Walls(n).Y,'r');
-        end
-        for n = 1:nCars
-            patch(Cars(n).X,Cars(n).Y,'b');
-        end
-        patch(agent.X,agent.Y,'g');
-        plot(goalx,goaly,'.','color','g','markersize',24);  
-        pause(0.001); % pause(0.01); % pause(1);
-        if (mod(episode,numepisodes/50) == 1)
-            make_animated_gif('snap')
-        end
+%         cla; % clear old plot
+%         for n = 1:nWalls
+%             patch(Walls(n).X,Walls(n).Y,'r');
+%         end
+%         for n = 1:nCars
+%             patch(Cars(n).X,Cars(n).Y,'b');
+%         end
+%         patch(agent.X,agent.Y,'g');
+%         plot(goalx,goaly,'.','color','g','markersize',24);  
+%         pause(0.001); % pause(0.01); % pause(1);
+%         if (mod(episode,numepisodes/50) == 1)
+%             make_animated_gif('snap')
+%         end
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % keep track of stats
@@ -297,7 +297,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % save trained Q-matrix
-save('Q2.mat','Q');
+save('Q.mat','Q');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % calculate the rates for the training stats
