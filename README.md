@@ -23,7 +23,8 @@ Learning Parameters: The learning rate α = inverse to the number of times the s
 
 
 
-Results: Trainging attempts failed ... this is a work in progress
+Results: -------------------------------------------------------------------------------------------------------------------------------
+Trainging attempts failed ... this is a work in progress
 
 
 
