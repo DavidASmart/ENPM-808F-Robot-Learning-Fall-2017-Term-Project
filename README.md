@@ -3,13 +3,13 @@ Autonomous Car in City-Maze (Game) with Q-Learning
 
 
 
-Intorduction:
+Intorduction:---------------------------------------------------------------------------------------------------------------------------
 
 The problem of training an autonomous car to navigate through a city to a destination without crashing or breaking the law was simplified to a computer game.
 
 
 
-Approach:
+Approach:-------------------------------------------------------------------------------------------------------------------------------
 
 Possible agent actions: (1) up, (2) down, (3) right, (4) left, and (5) stop. 
 
@@ -27,7 +27,7 @@ Results: Trainging attempts failed ... this is a work in progress
 
 
 
-Analysis: 
+Analysis: ------------------------------------------------------------------------------------------------------------------------------
 
 1st attempt had issues with the order of operations and the state was lacking needed information.
 2nd attempt had crash evaluation errors. 
@@ -39,7 +39,7 @@ It may be better to have a Q-matrix dedicated to collision avoidance based on th
 
 
 
-Future Work:
+Future Work: ---------------------------------------------------------------------------------------------------------------------------
 
 Try expanding the state-information.
 Try two Q-learners.
@@ -53,7 +53,7 @@ Complexity ramped back up to the original problem incorporation of diagonal move
 
   
   
-Short Description of scripts/functions:
+Short Description of scripts/functions: ------------------------------------------------------------------------------------------------
 
 InitWorld - script to create the environment (requires "numrc" and "worldtype" to be specified)
 		numrc - size of world (world is square)
