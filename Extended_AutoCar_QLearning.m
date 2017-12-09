@@ -44,8 +44,8 @@ numrc = 10; % Size of world
 load('Q_b.mat')
                     
 % extend the number of training episoides
-numepisodes_old = numepisodes;
-numepisodes = numepisodes_old + ((numrc*2)*(numrc*2)*(2^4)*(5)*(5))/2;
+numepisodes_old = numepisodes-episode;
+numepisodes = numepisodes_old + ((numrc*2)*(numrc*2)*(2^4)*(5)*(5));
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -76,13 +76,13 @@ for episode = numepisodes_old:numepisodes
     
     % epsilon = 0.75 + (0.01 - 0.75)*(episode/numepisodes);
     % reduced epsilon...but not just continuing lower
-    epsilon = 0.75/2 + (0.01/2 - 0.75/2)*(episode/numepisodes);
+    epsilon = 0.375 + (0.005 - 0.375)*(episode-numepisodes_old)/(numepisodes-numepisodes_old);
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % periodic episode-gif creation & Q-matrix backups
     if (mod(episode,numepisodes/50) == 1)
 %         make_animated_gif('clear')
-        save('Q_b2.mat');
+        save('Q_b_extended.mat');
 %     elseif (mod(episode,numepisodes/50) == 2)
 %         make_animated_gif('write',strcat('Q_e',num2str(episode)),0.1,10)
     end
