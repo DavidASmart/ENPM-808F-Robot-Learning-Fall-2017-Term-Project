@@ -105,7 +105,7 @@ for episode = 1:numepisodes
     % periodic episode-gif creation & Q-matrix backups
     if (mod(episode,numepisodes/50) == 1)
 %         make_animated_gif('clear')
-        save('Q_b2.mat');
+        save('Q_b.mat');
 %     elseif (mod(episode,numepisodes/50) == 2)
 %         make_animated_gif('write',strcat('Q_e',num2str(episode)),0.1,10)
     end
@@ -330,21 +330,21 @@ plot(episodes,Qsum,'color', [0.5 0 1],'LineWidth',2);
 title('Q-Learning');
 xlabel('episodes');
 ylabel('Q-sum');
-saveas(gcf,'Q_sum2.jpg');
+saveas(gcf,'Q_sum.jpg');
 
 figure(2);
 plot(episodes,abs(Qsum),'color', [0.5 0 1],'LineWidth',2);
 title('Q-Learning');
 xlabel('episodes');
 ylabel('Abs(Q-sum)');
-saveas(gcf,'Q_sumabs2.jpg');
+saveas(gcf,'Q_sumabs.jpg');
 
 figure(3);
 plot(episodes,Q_rate,'color', [0.5 0 1],'LineWidth',2);
 title('Q-Learning');
 xlabel('episodes');
 ylabel('Q-rate');
-saveas(gcf,'Q_rate2.jpg');
+saveas(gcf,'Q_rate.jpg');
 
 figure(4);
 plot(episodes,numcrashes,'r','LineWidth',2);
@@ -356,7 +356,7 @@ title('Q-Learning');
 xlabel('episodes');
 ylabel('No. Events');
 legend('crashes', 'goals reached','timeouts')
-saveas(gcf,'Stats2.jpg');
+saveas(gcf,'Stats.jpg');
 
 figure(5);
 plot(episodes,crash_rate,'r','LineWidth',2);
@@ -368,6 +368,6 @@ title('Q-Learning');
 xlabel('episodes');
 ylabel('Event Rate');
 legend('crashes', 'goals reached','timeouts')
-saveas(gcf,'Stats_rate2.jpg');
+saveas(gcf,'Stats_rate.jpg');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
