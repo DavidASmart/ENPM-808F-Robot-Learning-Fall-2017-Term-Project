@@ -2,9 +2,11 @@
 Autonomous Car in City-Maze (Game) with Q-Learning
 
 
+
 Intorduction:
 
 The problem of training an autonomous car to navigate through a city to a destination without crashing or breaking the law was simplified to a computer game.
+
 
 
 Approach:
@@ -20,29 +22,36 @@ Rewards: If the learning agent arrived at the goal +2, If the learning agent cra
 Learning Parameters: The learning rate α = inverse to the number of times the state-action pair had been seen during training, The discounting factor 𝛾 = 0.9, ε-greedy action selection was used; ε was linearly interpolated between 0.75 and 0.01 based on the episode count.
 
 
-Results: Trainging attempt failed ... this is a work in progress
+
+Results: Trainging attempts failed ... this is a work in progress
+
 
 
 Analysis: 
 
-The second training attempt had numerous crash evaluation errors. This has been fixed, but a complete retraining is needed. 
+1st attempt had issues with the order of operations and the state was lacking needed information.
+2nd attempt had crash evaluation errors. 
+3rd attempt ...
 
 It appears that more information about the layout of the world is needed to navigate to the goal. 
 
 It may be better to have a Q-matrix dedicated to collision avoidance based on the binary vector for imminent crashes and another separate Q-matrix dedicated to navigation based on the positions of the buildings.
 
 
+
 Future Work:
 
-Fix errors specified in analysis section.
+Try expanding the state-information.
+Try two Q-learners.
 
 Complexity ramped back up to the original problem incorporation of diagonal moves
 	stop signs and traffic lights
 	car movements asynchronous and more random
-	space continuous and giving the agent differential drive
+	make space continuous and giving the agent differential drive
 	one-way and two-way streets
 	Q-matrix changed to Deep-Q Network
 
+  
   
 Short Description of scripts/functions:
 
