@@ -36,19 +36,19 @@ numrc = 10; % Size of world
 % SET UP Q-learning
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % load Q-learner
-% load('Q.mat');
 % QInit_ca; % avoid collisions
 % QInit_ca_dg2; % avoid collisions & move toward goal
 % QInit_ca_dg_ocd; % avoid collisions & move toward goal ...
                  % ... try moving "inteligently" if oscillating 
                  % (direction to goal considered, but direction of ocd not considered)
-load('Q2.mat')      
+% load('Q.mat');
+load('Q_extended.mat')   
                  
 % max time per episode
 maxt = 100;
 
 % number of testing episoides
-numepisodes = numrc*10;
+numepisodes = 1000;
 
 % some stats
 timeouts = 0;
@@ -76,7 +76,7 @@ for episode = 1:numepisodes
     A = zeros(1,maxt);
     T = t+5;
     
-    make_animated_gif('clear')
+%     make_animated_gif('clear')
     
     % time loop for episode
     while (timeout ~= 1) && (goalreached ~= 1) && (crashed ~= 1)
@@ -103,54 +103,54 @@ for episode = 1:numepisodes
         % update world display
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         t = t + dt;
-        if (t >= maxt)
-            timeout = 1;
-            timeouts = timeouts+1;
-        end
-        cla; % clear old plot
-        for n = 1:nWalls
-            patch(Walls(n).X,Walls(n).Y,'r');
-        end
-        for n = 1:nCars
-            patch(Cars(n).X,Cars(n).Y,'b');
-        end
-        patch(agent.X,agent.Y,'g');
-        plot(goalx,goaly,'.','color','g','markersize',24);  
-        pause(0.001); % pause(0.01); % pause(1);
-        make_animated_gif('snap')
+%         cla; % clear old plot
+%         for n = 1:nWalls
+%             patch(Walls(n).X,Walls(n).Y,'r');
+%         end
+%         for n = 1:nCars
+%             patch(Cars(n).X,Cars(n).Y,'b');
+%         end
+%         patch(agent.X,agent.Y,'g');
+%         plot(goalx,goaly,'.','color','g','markersize',24);  
+%         pause(0.001); % pause(0.01); % pause(1);
+%         make_animated_gif('snap')
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Update State
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % check if crashed into walls
-        for n = 1:nWalls
-            if ((agent.x - Walls(n).x)^2 +(agent.y - Walls(n).y)^2 < 1)
-                crashed = 1;
-                numcrashes = numcrashes+1;
-                if (a ~= 5)
-                    if (ca(a) == 0) % check if CrashEval_agent works perfectly
-                        EvalErr = EvalErr+1; 
+       % check if crashed into walls
+            for n = 1:nWalls
+                if ((agent.x - Walls(n).x)^2 +(agent.y - Walls(n).y)^2 < 1)
+                    crashed = 1;
+                    numcrashes = numcrashes+1;
+                    if (a ~= 5)
+                        if (ca(a) == 0) % check if CrashEval_agent works perfectly
+                            EvalErr = EvalErr+1; 
+                        end
                     end
                 end
             end
-        end
-        % check if crashed into cars
-        for n = 1:nCars
-            if ((agent.x - Cars(n).x)^2 +(agent.y - Cars(n).y)^2 < 1)
-                crashed = 1;
-                numcrashes = numcrashes+1;
-                if (a ~= 5)
-                    if (ca(a) == 0) % check if CrashEval_agent works perfectly
-                        EvalErr = EvalErr+1; 
+            % check if crashed into cars
+            for n = 1:nCars
+                if ((agent.x - Cars(n).x)^2 +(agent.y - Cars(n).y)^2 < 1)
+                    crashed = 1;
+                    numcrashes = numcrashes+1;
+                    if (a ~= 5)
+                        if (ca(a) == 0) % check if CrashEval_agent works perfectly
+                            EvalErr = EvalErr+1; 
+                        end
                     end
                 end
             end
-        end
-        
         % check if reached goal
-        if (dgx^2 + dgy^2 == 0)
-            goalreached = 1;
-            goalsreached = goalsreached+1;
+        if (crashed == 0)
+            if (dgx^2 + dgy^2 == 0)
+                goalreached = 1;
+                goalsreached = goalsreached+1;
+            elseif (t >= maxt)
+                timeout = 1;
+                timeouts = timeouts+1;
+            end
         end
     end
     
@@ -164,9 +164,9 @@ for episode = 1:numepisodes
     fprintf('\n max time/episode: \t %g sec',maxt);
     
     fprintf('\n\n episode: \t\t\t %g ',episode);
-    fprintf('\n no. crashes: \t\t %g ',numcrashes);
-    fprintf('\n no. goals reached:  %g ',goalsreached);
-    fprintf('\n no. timeouts: \t\t %g ',timeouts);
+    fprintf('\n no. goals reached:  %g \t ( %g %% )',goalsreached,100*goalsreached/episode);
+    fprintf('\n no. crashes: \t\t %g \t ( %g %% )',numcrashes,100*numcrashes/episode);
+    fprintf('\n no. timeouts: \t\t %g \t ( %g %% )',timeouts,100*timeouts/episode);
     if (EvalErr > 0)
         fprintf('\n\n CrashEval Error: \t %g ',EvalErr)
     end
@@ -189,9 +189,9 @@ for episode = 1:numepisodes
     fprintf('\n est. time left: \t %g days %g hrs %g min %g sec ',daysleft,hrsleft,hmsleft(2),hmsleft(3));
 
     
-    if (episode > 1)
-        make_animated_gif('write',strcat('Q_test',num2str(episode)),0.1,10)
-    end
+%     if (episode > 1)
+%         make_animated_gif('write',strcat('Q_test',num2str(episode)),0.1,10)
+%     end
     
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
