@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % David Smart
-% 12/9/2017
+% 12/10/2017
 % University of Maryland, College Park
 % ENPM 808F - Robot Learning
 % Term Project: Autonomous Car Tought by Q-Learning
@@ -125,75 +125,9 @@ for episode = 1:numepisodes
         AGENTcontroler
                 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % State Update
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        
-        % recalculate distance to goal
-        dgx_next = agent.x - goalx;
-        dgy_next = agent.y - goaly;
-        % recalculate is there an iminent crash ?
-        ca_next = CrashEval_agent(agent,Walls,nWalls,Cars,nCars);
-        % convert to index-value
-        cIndex_next = ca_next*[2^0;2^1;2^2;2^3]+1;
-        
-        % check if crashed into walls
-        for n = 1:nWalls
-            if ((agent.x - Walls(n).x)^2 +(agent.y - Walls(n).y)^2 == 0)
-                crashed = 1;
-                if (a ~= 5)
-                    if (ca(a) == 0) % check if CrashEval_agent works perfectly
-                        EvalErr = EvalErr+1; 
-                    end
-                end
-            end
-        end
-        
-        % check if crashed into cars
-        for n = 1:nCars
-            if ((agent.x - Cars(n).x)^2 +(agent.y - Cars(n).y)^2 == 0)
-                crashed = 1;
-                if (a ~= 5)
-                    if (ca(a) == 0) % check if CrashEval_agent works perfectly
-                        EvalErr = EvalErr+1; 
-                    end
-                end
-            end
-        end
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Q-learning
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % evaluate reward
-        if (crashed == 1)
-            r = -2;
-        elseif (dgx_next^2 + dgy_next^2 == 0)
-            r = 2;
-            goalreached = 1;
-        else
-            r = 0; % -0.01;
-        end
-        
-        % update alpha
-        saCounter(dgx+numrc,dgy+numrc,cIndex,ocd_old, a) = saCounter(dgx+numrc,dgy+numrc,cIndex,ocd_old, a) + 1;
-        alpha = 1 / saCounter(dgx+numrc,dgy+numrc,cIndex,ocd_old,a);
-        
-        % update Q-value
-        Q_current = Q(dgx+numrc, dgy+numrc, cIndex, ocd_old, a);
-        Q_next = max(Q(dgx_next+numrc, dgy_next+numrc, cIndex_next, ocd, :));
-        Q(dgx+numrc, dgy+numrc, cIndex, ocd_old, a) = (1-alpha)*Q_current + alpha*(r + gamma*Q_next);
-        % so that we don't calculate the same thing twice...
-        dgx = dgx_next;
-        dgy = dgy_next;
-        ca = ca_next;
-        cIndex = cIndex_next;
-        
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % update time
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         t = t + dt;
-        if (t >= maxt)
-            timeout = 1;
-        end
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % update world display
@@ -211,6 +145,78 @@ for episode = 1:numepisodes
 %         if (mod(episode,numepisodes/50) == 1)
 %             make_animated_gif('snap')
 %         end
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % State Update
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % recalculate distance to goal
+        dgx_next = agent.x - goalx;
+        dgy_next = agent.y - goaly;
+        % recalculate is there an iminent crash ?
+        ca_next = CrashEval_agent(agent,Walls,nWalls,Cars,nCars);
+        % convert to index-value
+        cIndex_next = ca_next*[2^0;2^1;2^2;2^3]+1;
+        
+       % check if crashed into walls
+        for n = 1:nWalls
+            if ((agent.x - Walls(n).x)^2 +(agent.y - Walls(n).y)^2 < 1)
+                crashed = 1;
+                numcrashes = numcrashes+1;
+                if (a ~= 5)
+                    if (ca(a) == 0) % check if CrashEval_agent works perfectly
+                        EvalErr = EvalErr+1; 
+                    end
+                end
+            end
+        end
+        % check if crashed into cars
+        for n = 1:nCars
+            if ((agent.x - Cars(n).x)^2 +(agent.y - Cars(n).y)^2 < 1)
+                crashed = 1;
+                numcrashes = numcrashes+1;
+                if (a ~= 5)
+                    if (ca(a) == 0) % check if CrashEval_agent works perfectly
+                        EvalErr = EvalErr+1; 
+                    end
+                end
+            end
+        end
+        % check if reached goal
+        if (crashed == 0)
+            if (dgx^2 + dgy^2 == 0)
+                goalreached = 1;
+                goalsreached = goalsreached+1;
+            elseif (t >= maxt)
+                timeout = 1;
+                timeouts = timeouts+1;
+            end
+        end
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Q-learning
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % evaluate reward
+        if (crashed == 1)
+            r = -2;
+        elseif (goalreached == 1)
+            r = 2;
+        else
+            r = 0; % -0.01;
+        end
+        
+        % update alpha
+        saCounter(dgx+numrc,dgy+numrc,cIndex,ocd_old, a) = saCounter(dgx+numrc,dgy+numrc,cIndex,ocd_old, a) + 1;
+        alpha = 1 / saCounter(dgx+numrc,dgy+numrc,cIndex,ocd_old,a);
+        
+        % update Q-value
+        Q_current = Q(dgx+numrc, dgy+numrc, cIndex, ocd_old, a);
+        Q_next = max(Q(dgx_next+numrc, dgy_next+numrc, cIndex_next, ocd, :));
+        Q(dgx+numrc, dgy+numrc, cIndex, ocd_old, a) = (1-alpha)*Q_current + alpha*(r + gamma*Q_next);
+        % so that we don't calculate the same thing twice...
+        dgx = dgx_next;
+        dgy = dgy_next;
+        ca = ca_next;
+        cIndex = cIndex_next;
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % keep track of stats
