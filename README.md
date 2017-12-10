@@ -32,9 +32,12 @@ Analysis: ----------------------------------------------------------------------
 
 1st attempt had issues with the order of operations and the state was lacking needed information.
 2nd attempt had crash evaluation errors. 
-3rd attempt ...
+3rd attempt still crashed even after extending the training further 
+(I was able to write a script to make a Q-table which results in no crashes...so Q-learning should be able to accheive this too)
 
-It appears that more information about the layout of the world is needed to navigate to the goal. 
+It seems that more changes in the training are required. It may be best to randomly initialize the agent in the world.
+
+It appears that more information about the layout of the world is needed to navigate to the goal since there are still timeouts. 
 
 It may be better to have a Q-matrix dedicated to collision avoidance based on the binary vector for imminent crashes and another separate Q-matrix dedicated to navigation based on the positions of the buildings.
 
