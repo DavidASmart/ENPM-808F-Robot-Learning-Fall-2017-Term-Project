@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % David Smart
-% 12/9/2017
+% 12/1/2017
 % University of Maryland, College Park
 % ENPM 808F - Robot Learning
 % Term Project: Autonomous Car Tought by Q-Learning
@@ -12,12 +12,11 @@
 % creates green car 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% create world
-figure(1);
-cla;
-axis([0 numrc 0 numrc]);
-grid on;
-hold on;
+% figure(1);
+% cla;
+% axis([0 numrc 0 numrc]);
+% grid on;
+% hold on;
 
 % establish world object shape
 block_X = [-0.5,-0.5,0.5,0.5,-0.5];
@@ -36,8 +35,6 @@ for n = 1:numrc
     % set boundary of walls
     Walls(n).X = block_X + Walls(n).x;
     Walls(n).Y = block_Y + Walls(n).y;
-    % plot walls
-    patch(Walls(n).X,Walls(n).Y,'r');
 end
 for n = numrc+1:numrc*2
     % top boundary
@@ -48,8 +45,6 @@ for n = numrc+1:numrc*2
     % set boundary of walls
     Walls(n).X = block_X + Walls(n).x;
     Walls(n).Y = block_Y + Walls(n).y;
-    % plot walls
-    patch(Walls(n).X,Walls(n).Y,'r');
 end
 for n = numrc*2+1:numrc*3
     % left boundary
@@ -60,8 +55,6 @@ for n = numrc*2+1:numrc*3
     % set boundary of walls
     Walls(n).X = block_X + Walls(n).x;
     Walls(n).Y = block_Y + Walls(n).y;
-    % plot walls
-    patch(Walls(n).X,Walls(n).Y,'r');
 end
 for n = numrc*3+1:numrc*4
     % right boundary
@@ -72,8 +65,6 @@ for n = numrc*3+1:numrc*4
     % set boundary of walls
     Walls(n).X = block_X + Walls(n).x;
     Walls(n).Y = block_Y + Walls(n).y;
-    % plot walls
-    patch(Walls(n).X,Walls(n).Y,'r');
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -103,8 +94,6 @@ if (worldtype == 0) % grid
         % set boundary of walls
         Walls(n).X = block_X + Walls(n).x;
         Walls(n).Y = block_Y + Walls(n).y;
-        % plot walls
-        patch(Walls(n).X,Walls(n).Y,'r');
     end
     Walls_x(n) = Walls(n).x; % vector of all Wall x-pos
     Walls_y(n) = Walls(n).y; % vector of all Wall y-pos
@@ -130,8 +119,6 @@ elseif (worldtype == 1) % maze
         % set boundary of walls
         Walls(n).X = block_X + Walls(n).x;
         Walls(n).Y = block_Y + Walls(n).y;
-        % plot walls
-        patch(Walls(n).X,Walls(n).Y,'r');
     end
     Walls_x(nWalls) = Walls(nWalls).x; % vector of all Wall x-pos
     Walls_y(nWalls) = Walls(nWalls).y; % vector of all Wall y-pos
@@ -161,8 +148,6 @@ else % (worldtype == 2) % grid-maze
         % set boundary of walls
         Walls(n).X = block_X + Walls(n).x;
         Walls(n).Y = block_Y + Walls(n).y;
-        % plot walls
-        patch(Walls(n).X,Walls(n).Y,'r');
     end
     Walls_x(n) = Walls(n).x; % vector of all Wall x-pos
     Walls_y(n) = Walls(n).y; % vector of all Wall y-pos
@@ -188,8 +173,6 @@ else % (worldtype == 2) % grid-maze
         % set boundary of walls
         Walls(n).X = block_X + Walls(n).x;
         Walls(n).Y = block_Y + Walls(n).y;
-        % plot walls
-        patch(Walls(n).X,Walls(n).Y,'r');
     end
     Walls_x(nWalls) = Walls(nWalls).x; % vector of all Wall x-pos
     Walls_y(nWalls) = Walls(nWalls).y; % vector of all Wall y-pos
@@ -217,8 +200,6 @@ for n = 1:nCars
     % set boundary of cars
     Cars(n).X = block_X./2 + Cars(n).x;
     Cars(n).Y = block_Y./2 + Cars(n).y;
-    % plot cars
-    patch(Cars(n).X,Cars(n).Y,'b');
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -229,8 +210,6 @@ agent.y = 1; % y-pos
 % set boundary of agent
 agent.X = block_X./2 + agent.x;
 agent.Y = block_Y./2 + agent.y;
-% plot walls
-patch(agent.X,agent.Y,'g');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -245,9 +224,23 @@ goaly = randi([2,numrc-1]); % y-pos
             goaly = randi([2,numrc-1]); % y-pos
         end
     end
-% plot goal
-plot(goalx,goaly,'.','color','g','markersize',24);
 
-pause(0.001); % pause(0.1); % pause(0.01);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% % plot walls
+% for n = 1:nWalls
+%     patch(Walls(n).X,Walls(n).Y,'r');
+% end
+% % plot cars
+% for n = 1:nCars
+%     patch(Cars(n).X,Cars(n).Y,'b');
+% end
+% % plot agent
+% patch(agent.X,agent.Y,'g');
+% % plot goal
+% plot(goalx,goaly,'.','color','g','markersize',24);  
+% % pause
+% pause(0.001);
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
