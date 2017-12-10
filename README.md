@@ -59,7 +59,7 @@ Complexity ramped back up to the original problem incorporation of diagonal move
   
 Short Description of scripts/functions: ------------------------------------------------------------------------------------------------
 
-**NOTE: currently, the displays and gif creation is disabled. If you want to renable these, just uncomment that portion of the code. They are not too difficult to find. If I have time, I will make this an option determined by a variable set at the beginning of training or testing scripts.**
+**NOTE: currently, the displays and gif creation is disabled because these slow the process significantly. If you want to renable these, just uncomment that portion of the code. They are not too difficult to find. If I have time, I will make this an option determined by a variable set at the beginning of training or testing scripts.**
 
 InitWorld - script to create the environment (requires "numrc" and "worldtype" to be specified)
 		numrc - size of world (world is square)
