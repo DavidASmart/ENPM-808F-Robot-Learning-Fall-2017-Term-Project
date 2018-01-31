@@ -19,13 +19,23 @@ State Representation: Q-value matrix with seperate dimenstion for each state var
 
 Rewards: If the learning agent arrived at the goal +2, If the learning agent crashed: -2.
 
-Learning Parameters: The learning rate α = inverse to the number of times the state-action pair had been seen during training, The discounting factor 𝛾 = 0.9, ε-greedy action selection was used; ε was linearly interpolated between 0.75 and 0.01 based on the episode count.
+Learning Parameters: The learning rate α = inverse to the number of times the state-action pair had been seen during training, The discounting factor 𝛾 = 0.9, ε-greedy action selection was used...
 
+ATTEMPTS DURING CLASS (1-3)
+ε was linearly interpolated between 0.75 and 0.01 based on the episode count.
+
+ATTEMPTS SINCE CLASS ENDED (code not uploaded)
+ε was linearly interpolated between 0.25 and 0.01 based on the episode count.
+ε was linearly interpolated between 1.5 and 0 -OR- 1 and 0 based on the episode count and the previous episodes reward.
+ε was calculated as the inverse of the avearge number of times states had been visited.
+ε was calculated as the inverse of the number of times states had been visited.
+ε was calculated from the number of times an action was taken given a certain states.
+ε was linearly interpolated between 1 and 0, but actions with negative Q values are not included in experimentation.
 
 
 Results: -------------------------------------------------------------------------------------------------------------------------------
 Trainging attempts failed ... this is a work in progress
-
+Best results from 3rd attempt: 70% goals reached, 20% crashes, 10% timeouts
 
 
 Analysis: ------------------------------------------------------------------------------------------------------------------------------
